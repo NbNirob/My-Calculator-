@@ -1,0 +1,61 @@
+package com.example.mycalculator;
+
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import androidx.appcompat.app.AppCompatActivity;
+
+public class MainActivity extends AppCompatActivity {
+
+    EditText display;
+    double num1, num2;
+    String operator;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        display = findViewById(R.id.editText);
+
+        int[] buttonIds = {
+            R.id.b0, R.id.b1, R.id.b2, R.id.b3, R.id.b4,
+            R.id.b5, R.id.b6, R.id.b7, R.id.b8, R.id.b9,
+            R.id.bDot, R.id.bAdd, R.id.bSub, R.id.bMul, R.id.bDiv, R.id.bClear, R.id.bEqual
+        };
+
+        for (int id : buttonIds) {
+            findViewById(id).setOnClickListener(this::onClick);
+        }
+    }
+
+    public void onClick(View v) {
+        Button b = (Button) v;
+        String text = b.getText().toString();
+
+        switch (text) {
+            case "C":
+                display.setText("");
+                break;
+            case "+":
+            case "-":
+            case "*":
+            case "/":
+                operator = text;
+                num1 = Double.parseDouble(display.getText().toString());
+                display.setText("");
+                break;
+            case "=":
+                num2 = Double.parseDouble(display.getText().toString());
+                double result = 0;
+                if (operator.equals("+")) result = num1 + num2;
+                else if (operator.equals("-")) result = num1 - num2;
+                else if (operator.equals("*")) result = num1 * num2;
+                else if (operator.equals("/")) result = num1 / num2;
+                display.setText(String.valueOf(result));
+                break;
+            default:
+                display.append(text);
+        }
+    }
+}
